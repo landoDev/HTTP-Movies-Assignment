@@ -3,7 +3,7 @@ import { useParams , useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const UpdateMovie = props =>{
-    const [stars, setStars] = useState([])
+    const [stars, setStars] = useState(false)
     const [movie, setMovie] = useState({
         id: NaN,
         title: '',
@@ -23,11 +23,15 @@ const UpdateMovie = props =>{
         })
     }
 
-    const addStars = e => {
-        e.preventDefault();
-        setStars([...stars, e.target.name]);
-      };
-    console.log(movie)
+    // const addStars = e => {
+    //     e.preventDefault();
+    //     setMovie({
+    //         ...movie,
+    //         stars: movie.stars.split(',')
+    //     });
+    //     setStars(true)
+    //   };
+
     useEffect(()=>{
         const movieToUpdate = props.movieList.find(e => `${e.id}` === id);
         if(movieToUpdate) {
@@ -40,6 +44,14 @@ const UpdateMovie = props =>{
         axios.put(`http://localhost:5000/api/movies/${movie.id}`, movie)
         .then(res=>{
             console.log(res)
+            // props.setMovieList(res.data)
+            props.setMovieList.map(item=>{
+                if(`${movie.id} === ${res.data.id}`){
+                    return item
+                } else {
+                    return movie
+                }
+            })
         })
         .catch(err=>{
             console.log('D\'\OH', err)
@@ -58,10 +70,10 @@ const UpdateMovie = props =>{
 
             <label>Edit Metascore</label>
             <input type='number' name='metascore' onChange={handleInputs} value={movie.metascore}></input>
-
+{/* 
             <label name='stars' onClick={addStars}>Add Star
             <input name = 'stars' placeholder='Add a Star'></input>
-            </label>
+            </label> */}
 
             <button>Update Movie</button>
         </form>
