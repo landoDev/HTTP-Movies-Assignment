@@ -3,11 +3,11 @@ import axios from 'axios';
 import { useRouteMatch, useHistory, useParams } from 'react-router-dom';
 import MovieCard from './MovieCard';
 
-function Movie({ addToSavedList }) {
+function Movie({ addToSavedList , movieList, setMovieList}) {
   const [movie, setMovie] = useState(null);
   const match = useRouteMatch();
   const history = useHistory()
-  console.log(history)
+  // console.log(history)
 
   const fetchMovie = id => {
     axios
@@ -35,6 +35,15 @@ function Movie({ addToSavedList }) {
     history.push(`/update-movie/${match.params.id}`)
   }
 
+  const deleteMovie = e =>{
+    e.preventDefault();
+    axios.delete(`http://localhost:5000/api/movies/${match.params.id}`)
+    .then(res=>{
+      console.log(res)
+      history.push('/')
+    })
+  }
+
   return (
     <div className='save-wrapper'>
       <MovieCard movie={movie} />
@@ -45,6 +54,9 @@ function Movie({ addToSavedList }) {
       
       <button className='edit-button' onClick={routeToUpdate}>
         Edit
+      </button>
+      <button className='delete-button' onClick={deleteMovie}>
+        Delete
       </button>
     </div>
   );
