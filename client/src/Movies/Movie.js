@@ -30,28 +30,38 @@ function Movie({ addToSavedList , movieList, setMovieList}) {
 
   const routeToUpdate = e =>{
     e.preventDefault();
-    checkIfStarWars(movie.title);
-    {checkIfStarWars ? history.push('/'): history.push(`/update-movie/${match.params.id}`)}
+    checkIfStarWarsUpdate(movie.title);
+    // {checkIfStarWars ? history.push('/'): history.push(`/update-movie/${match.params.id}`)}
     
   }
 
   const deleteMovie = e =>{
     e.preventDefault();
-    checkIfStarWars(movie.title);
-    {checkIfStarWars ? history.push('/'): axios.delete(`http://localhost:5000/api/movies/${match.params.id}`)
-    .then(res=>{
-      console.log(res)
-      history.push('/')
-    })}
-
+    checkIfStarWarsDelete(movie.title);
   }
 
-  const checkIfStarWars = title =>{
+  const checkIfStarWarsUpdate = title =>{
     if(title === 'Star Wars'){
       return(
         alert('DON\'\T YOU F$#%!@# DARE!')
         ) 
-    } 
+    } else {
+      history.push(`/update-movie/${match.params.id}`)
+    }
+  }
+
+  const checkIfStarWarsDelete = title =>{
+    if(title === 'Star Wars'){
+      return(
+        alert('DON\'\T YOU F$#%!@# DARE!')
+        ) 
+    } else {
+      axios.delete(`http://localhost:5000/api/movies/${match.params.id}`)
+      .then(res=>{
+      console.log(res)
+      history.push('/')
+    })
+    }
   }
 
   return (
